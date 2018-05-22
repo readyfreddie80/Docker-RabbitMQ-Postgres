@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+
+  queue:
+    tty: true
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+
+  db:
+    restart: always
+    build: ./Postgres
+    ports:
+      - "8080:5672"
+
+  consumer:
+    tty: true
+    restart: always
+    build: ./Consumer
+    links:
+      - queue
+      - db
+
+  
+
